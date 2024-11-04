@@ -8,8 +8,8 @@ import preprocessing_utils as put
 def main(): 
     X_train, X_test, y_train, y_test = put.heart()
     mods.xgbFull(X_train, X_test, y_train, y_test)
-
-
+    mods.svmFull(X_train, X_test, y_train, y_test, 'poly')
+    
 
 
 if __name__ == '__main__': 

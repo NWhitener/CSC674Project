@@ -3,7 +3,7 @@ import numpy as np
 import xgboost as xgb 
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
-
+import ffnn_utils as fut
 def evaluate_model_performance(y_true, y_pred, y_prob):
 
     # Compute metrics
@@ -78,3 +78,8 @@ def svmFull(X_train, X_test, y_train, y_test, kernel):
 
     print(scores)
 
+
+
+def ffnn(features, targets): 
+    fut.run_ffnn_model(features,targets, 2)
+    

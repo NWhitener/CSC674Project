@@ -9,6 +9,7 @@ def main():
     X_train, X_test, y_train, y_test = put.heart()
     mods.xgbFull(X_train, X_test, y_train, y_test)
     mods.svmFull(X_train, X_test, y_train, y_test, 'poly')
+    mods.ffnn(X_train, y_train)
     
 
 

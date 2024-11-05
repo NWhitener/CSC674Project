@@ -10,8 +10,8 @@ import ffnn_utils as fut
 def evaluate_model_performance(y_true, y_pred, y_prob):
     # Compute metrics
     accuracy = accuracy_score(y_true, y_pred)
-    precision = precision_score(y_true, y_pred, average='binary')
-    recall = recall_score(y_true, y_pred, average='binary')
+    precision = precision_score(y_true, y_pred, average='binary', zero_division= 1)
+    recall = recall_score(y_true, y_pred, average='binary', zero_division=1)
     f1 = f1_score(y_true, y_pred, average='binary')
     auc_roc = roc_auc_score(y_true, y_prob)
 
@@ -25,6 +25,19 @@ def evaluate_model_performance(y_true, y_pred, y_prob):
     }
     return metrics
 
+def average_metrics(metrics_list):
+
+    avg_metrics = {key: 0 for key in metrics_list[0]}
+
+    for metrics in metrics_list:
+        for key in avg_metrics:
+            avg_metrics[key] += metrics[key]
+
+    num_iterations = len(metrics_list)
+    for key in avg_metrics:
+        avg_metrics[key] /= num_iterations
+    
+    return avg_metrics
 
 #### XGBOOST METHODS
 
@@ -48,11 +61,7 @@ def xgbFull(X_train, X_test, y_train, y_test):
 
     metrics = evaluate_model_performance(y_test, preds, pred_proba)
 
-    print(metrics)
-
-
-
-    print(scores)
+    return metrics
 
 
 ### SVM Model 
@@ -77,11 +86,7 @@ def svmFull(X_train, X_test, y_train, y_test, kernel):
 
     metrics = evaluate_model_performance(y_test, preds, pred_proba)
 
-    print(metrics)
-
-
-
-    print(scores)
+    return metrics
 
 
 ### attempt at FFNN 
@@ -92,8 +97,8 @@ def ffnn(features, targets):
 
 ### Logistic Regression 
     
-def build_LogReg(features, target, kernel): 
-    logreg_model = LogisticRegression()
+def build_LogReg(features, target): 
+    logreg_model = LogisticRegression(max_iter = 10000)
     logreg_model.fit(features, target)
     return logreg_model
 
@@ -109,10 +114,9 @@ def LogRegFull(X_train, X_test, y_train, y_test):
     preds = model.predict(X_test)
 
     pred_proba = model.predict_proba(X_test)[:,1]
+ 
 
     metrics = evaluate_model_performance(y_test, preds, pred_proba)
 
-    print(metrics)
-
-    print(scores)
+    return metrics
 

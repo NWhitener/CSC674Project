@@ -19,7 +19,6 @@ Could explore how this is applied? Different random selection? etc.
 def flip_random_labels(data, percent):
     
     data_copy = data.copy()
-    print(len(data_copy)) 
     #Figure out how much to tamper with
     total = int(percent * len(data))
     #Select a random sample of the dataset
@@ -33,11 +32,8 @@ def flip_random_labels(data, percent):
         else: 
             data_copy.loc[i, 'DEATH_EVENT'] = 0
             data_copy.loc[i,'Tampered'] = 1
-    print(len(data_copy))
     return data_copy
 
-import pandas as pd
-import numpy as np
 
 def inject_new(data, number, mode): 
     copy_data = data.copy()  

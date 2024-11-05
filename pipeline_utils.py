@@ -5,7 +5,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 import preprocessing_utils as put
 
-def main(): 
+
+def test_posion(posionType, dataset): 
     X_train, X_test, y_train, y_test = put.heart()
     xgboost_list = []
     svm_list = []
@@ -27,7 +28,3 @@ def main():
     print("Averaged SVM Metrics:", svm_avg_metrics)
     print("Averaged Logistic Regression Metrics:", logreg_avg_metrics)
         
-
-
-if __name__ == '__main__': 
-    main()

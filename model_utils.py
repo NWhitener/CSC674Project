@@ -13,7 +13,10 @@ def evaluate_model_performance(y_true, y_pred, y_prob):
     precision = precision_score(y_true, y_pred, average='binary', zero_division= 1)
     recall = recall_score(y_true, y_pred, average='binary', zero_division=1)
     f1 = f1_score(y_true, y_pred, average='binary')
-    auc_roc = roc_auc_score(y_true, y_prob)
+    if len(set(y_true)) < 2:
+        auc_roc = -1
+    else:     
+        auc_roc = roc_auc_score(y_true, y_prob)
 
     # Return metrics in a dictionary
     metrics = {

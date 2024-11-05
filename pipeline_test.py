@@ -8,9 +8,9 @@ import pipeline_utils as put
 
 def main(): 
     print("Heart Dataset")
-    put.test_posion(posionType='FLIP', percent=0.1, number=0, dataset='heart')
+    put.test_posion(posionType='INJECT', percent=0.1, number=10, dataset='heart', mode = 'random')
     print("Cancer Dataset")
-    put.test_posion(posionType='FLIP', percent=0.1, number = 0, dataset='cancer')
+    put.test_posion(posionType='INJECT', percent=0.1, number = 10, dataset='cancer',mode = 'random')
     
 
 

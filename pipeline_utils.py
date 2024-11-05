@@ -6,13 +6,13 @@ from sklearn.metrics import confusion_matrix
 import preprocessing_utils as put
 
 
-def test_posion(posionType, percent, number, dataset): 
+def test_posion(posionType, percent, number, dataset, mode): 
     if dataset == 'heart':
-        X_train, X_test, y_train, y_test = put.heart(posionType, percent, number)
+        X_train, X_test, y_train, y_test = put.heart(posionType, percent, number, mode)
     if dataset == 'loan': 
-        X_train, X_test, y_train, y_test = put.loan(posionType, percent, number)
+        X_train, X_test, y_train, y_test = put.loan(posionType, percent, number, mode)
     if dataset == 'cancer': 
-        X_train, X_test, y_train, y_test = put.cancer(posionType, percent, number)
+        X_train, X_test, y_train, y_test = put.cancer(posionType, percent, number, mode)
     xgboost_list = []
     svm_list = []
     logreg_list = []

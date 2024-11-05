@@ -113,23 +113,34 @@ def tamper_rows(data, percent, mode):
             data_copy.loc[i,'Tampered'] = 1
     return data_copy   
 
-def main(): 
-    data = pd.read_csv("heart_failure_clinical_records_dataset.csv")
-    data.drop(columns=['time'], inplace = True)
-    data2 = flip_random_labels(data, 0.05)
-    data3 = inject_new(data, 14, 'random')
-    data4 = inject_new(data, 14, 'distribution')
-    data5 = inject_new(data, 14, 'malicious')
-    data6 = tamper_rows(data, 0.05, 'random')
-    data7 = tamper_rows(data, 0.05, 'distribution')
-    data8 = tamper_rows(data, 0.05,'malicious')
-    print(data2["Tampered"].value_counts())
-    print(data3["Tampered"].value_counts())
-    print(data4["Tampered"].value_counts())
-    print(data5["Tampered"].value_counts())
-    print(data6["Tampered"].value_counts())
-    print(data7["Tampered"].value_counts())
-    print(data8["Tampered"].value_counts())
-    
-if __name__ == '__main__': 
-    main()
+#################################################################
+# Next Functions are not necessarily posions but data tampering #
+# They do not have a tamper label so we can't tell if they are  #
+# tampered with but I thought it was interesting to see what    #
+# happens                                                       #
+#################################################################
+
+
+def permute_rows(data): 
+    data_copy = data.copy()
+    data_copy = data_copy.reindex(np.random.permutation(data_copy.index))
+    return data_copy 
+
+def permute_columns(data):
+    data_copy = data.copy()
+    data_copy = data_copy.reindex(columns=np.random.permutation(data_copy.columns))
+    return data_copy
+
+
+def duplicate_columns(data):
+    data_copy = data.copy()
+    random_column = np.random.randint(0,data_copy.shape[1])
+    column_copy = data_copy.iloc[:, random_column]
+    data_copy["Column Copy"] = column_copy
+    return data_copy
+
+
+
+
+
+

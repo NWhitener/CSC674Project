@@ -1,13 +1,18 @@
 import model_utils as mods 
-import posion_utils as pu 
+import poison_utils as pu 
 import pandas as pd 
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 import preprocessing_utils as put
 
 
-def test_posion(posionType, dataset): 
-    X_train, X_test, y_train, y_test = put.heart()
+def test_posion(posionType, percent, number, dataset): 
+    if dataset == 'heart':
+        X_train, X_test, y_train, y_test = put.heart(posionType, percent, number)
+    if dataset == 'loan': 
+        X_train, X_test, y_train, y_test = put.loan(posionType, percent, number)
+    if dataset == 'cancer': 
+        X_train, X_test, y_train, y_test = put.cancer(posionType, percent, number)
     xgboost_list = []
     svm_list = []
     logreg_list = []

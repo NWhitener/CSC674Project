@@ -1,12 +1,10 @@
 '''
 This file will be used to write the methods that 
-we need tp effectively posion the data set
+we need tp effectively poison the data set
 '''
 import pandas as pd 
 import numpy as np 
 
-
-data = pd.read_csv("heart_failure_clinical_records_dataset.csv")
 
 def prep_poision(data): 
     data['Tampered'] = 0 
@@ -16,7 +14,7 @@ def prep_poision(data):
 This function randomly flipps the label a certain percent of the dataset. The rate of fliping can be variable
 Could explore how this is applied? Different random selection? etc. 
 '''
-def flip_random_labels(data, percent):
+def flip_random_labels(data, percent, dataset):
     
     data_copy = data.copy()
     #Figure out how much to tamper with
@@ -24,14 +22,24 @@ def flip_random_labels(data, percent):
     #Select a random sample of the dataset
     flips = np.random.randint(0, len(data), size=total)
     data_copy = prep_poision(data_copy)
-    for i in flips: 
-        if data_copy.loc[i, 'DEATH_EVENT'] == 0: 
-            #Flip the data point
-            data_copy.loc[i, 'DEATH_EVENT'] = 1
-            data_copy.loc[i, 'Tampered'] = 1
-        else: 
-            data_copy.loc[i, 'DEATH_EVENT'] = 0
-            data_copy.loc[i,'Tampered'] = 1
+    if dataset == 'heart': 
+        for i in flips: 
+            if data_copy.loc[i, 'DEATH_EVENT'] == 0: 
+                #Flip the data point
+                data_copy.loc[i, 'DEATH_EVENT'] = 1
+                data_copy.loc[i, 'Tampered'] = 1
+            else: 
+                data_copy.loc[i, 'DEATH_EVENT'] = 0
+                data_copy.loc[i,'Tampered'] = 1
+    if dataset == 'cancer': 
+        for i in flips: 
+            if data_copy.loc[i, 'diagnosis'] == 0: 
+                #Flip the data point
+                data_copy.loc[i, 'diagnosis'] = 1
+                data_copy.loc[i, 'Tampered'] = 1
+            else: 
+                data_copy.loc[i, 'diagnosis'] = 0
+                data_copy.loc[i,'Tampered'] = 1   
     return data_copy
 
 
@@ -110,7 +118,7 @@ def tamper_rows(data, percent, mode):
     return data_copy   
 
 #################################################################
-# Next Functions are not necessarily posions but data tampering #
+# Next Functions are not necessarily poisons but data tampering #
 # They do not have a tamper label so we can't tell if they are  #
 # tampered with but I thought it was interesting to see what    #
 # happens                                                       #

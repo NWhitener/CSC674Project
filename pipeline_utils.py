@@ -13,6 +13,8 @@ def test_posion(posionType, percent, number, dataset, mode):
         X_train, X_test, y_train, y_test = put.loan(posionType, percent, number, mode)
     if dataset == 'cancer': 
         X_train, X_test, y_train, y_test = put.cancer(posionType, percent, number, mode)
+    if dataset == 'machine': 
+        X_train, X_test, y_train, y_test = put.machine(posionType, percent, number, mode)
     xgboost_list = []
     svm_list = []
     logreg_list = []

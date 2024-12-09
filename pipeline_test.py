@@ -1,20 +1,21 @@
-import model_utils as mods 
-import poison_utils as pu 
-import pandas as pd 
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix
-
 import pipeline_utils as put
 
-def main(): 
-    print("Heart Dataset")
-    put.test_posion(posionType='INJECT', percent=0.1, number=10, dataset='heart', mode = 'random')
-    print("Cancer Dataset")
-    put.test_posion(posionType='INJECT', percent=0.1, number = 10, dataset='cancer',mode = 'random')
-    print("Machine Dataset")
-    put.test_posion(posionType='INJECT', percent=0.1, number = 10, dataset='machine',mode = 'random')
-    print("Loan Dataset")
-    put.test_posion(posionType='INJECT', percent=0.1, number = 10, dataset='loan',mode = 'random')
+def main():
+    print("Cancer Dataset Flip")
+    put.test_posion(posionType='FLIP', percent=0.1, number=10, dataset='cancer', mode = 'random')
+    
+    print("Cancer Dataset Inject")
+    put.test_posion(posionType='INJECT', percent=0.1, number=10, dataset='cancer', mode = 'random')
+
+    print("Cancer Dataset Tamper")
+    put.test_posion(posionType='TAMPER', percent=0.1, number=10, dataset='cancer', mode = 'random')
+
+    # print("Cancer Dataset")
+    # put.test_posion(posionType='INJECT', percent=0.1, number = 10, dataset='cancer',mode = 'random')
+    # print("Machine Dataset")
+    # put.test_posion(posionType='INJECT', percent=0.1, number = 10, dataset='machine',mode = 'random')
+    # print("Loan Dataset")
+    # put.test_posion(posionType='INJECT', percent=0.1, number = 10, dataset='loan',mode = 'random')
 
 if __name__ == '__main__': 
     main()

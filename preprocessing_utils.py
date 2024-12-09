@@ -12,7 +12,7 @@ def heart(poison, percent, number, mode):
     if poison == "INJECT": 
         data2 = pu.inject_new(data=data, number=number, mode = mode)
     if poison == "TAMPER": 
-        data2 = pu.tamper_rows(data= data, percent=percent)
+        data2 = pu.tamper_rows(data= data, percent=percent, mode = mode)
     X = data2.drop(columns = ['Tampered'])
     y = data2['Tampered']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, stratify=y, random_state=43)
@@ -26,7 +26,7 @@ def loan(poison, percent, number, mode):
     if poison == "INJECT": 
         data2 = pu.inject_new(data=data, number=number, mode = mode)
     if poison == "TAMPER": 
-        data2 = pu.tamper_rows(data= data, percent=percent)
+        data2 = pu.tamper_rows(data= data, percent=percent, mode = mode )
     X = data2.drop(columns = ['Tampered'])
     y = data2['Tampered']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, stratify=y, random_state=43)
@@ -41,7 +41,7 @@ def cancer(poison, percent, number, mode):
     if poison == "INJECT": 
         data2 = pu.inject_new(data=data, number=number, mode=mode)
     if poison == "TAMPER": 
-        data2 = pu.tamper_rows(data= data, percent=percent)
+        data2 = pu.tamper_rows(data= data, percent=percent, mode = mode)
     X = data2.drop(columns = ['Tampered'])
     y = data2['Tampered']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, stratify=y, random_state=43)
@@ -56,7 +56,7 @@ def machine(poison, percent, number, mode):
     if poison == "INJECT": 
         data2 = pu.inject_new(data=data, number=number, mode=mode)
     if poison == "TAMPER": 
-        data2 = pu.tamper_rows(data= data, percent=percent)
+        data2 = pu.tamper_rows(data= data, percent=percent, mode = mode)
     X = data2.drop(columns = ['Tampered'])
     y = data2['Tampered']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, stratify=y, random_state=43)

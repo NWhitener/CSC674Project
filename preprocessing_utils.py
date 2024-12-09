@@ -36,6 +36,8 @@ def loan(poison, percent, number, mode):
 def cancer(poison, percent, number, mode): 
     data = pd.read_csv('breast-cancer.csv')
     data['diagnosis'] = data['diagnosis'].map({'M': 1, 'B': 0})
+    column_to_move = data.columns[1] 
+    data = data[[col for col in data.columns if col != column_to_move] + [column_to_move]]
     if poison == "FLIP":
         data2 = pu.flip_random_labels(data=data, percent=percent, dataset='cancer')
     if poison == "INJECT": 

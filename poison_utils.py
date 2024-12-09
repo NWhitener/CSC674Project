@@ -50,21 +50,26 @@ def inject_new(data, number, mode):
     copy_data = prep_poision(copy_data)
 
     # Inject completely random data
-    if mode == 'random': 
+    if mode == 'RANDOM': 
         # Inject the specified number of rows
         for i in range(number):
             new_data = []
-
-            for column in copy_data.columns[:-1]: 
+            for column in copy_data.columns[:-1]:
+                val = np.random.uniform(low = 0, high = data[column].max())
+                mean = data[column].mean()
+                print(f"The random value from 0 to max of the {column} is {val}, the mean is {mean}")       
                 # Randomly generate a new piece of data based on the max of all of the values in a particular column
-                random_val_1 = int(np.random.uniform(0, data[column].max()))
+                if(data[column].dtype == 'int64'):
+                    random_val_1 = int(np.random.uniform(0, data[column].max()))
+                else:
+                    random_val_1 = (np.random.uniform(0, data[column].max()))
                 new_data.append(random_val_1)
             # Mark it as tampered
             new_data.append(1)
             # Add it to the dataset
             copy_data.loc[len(copy_data)] = new_data   
     
-    elif mode == 'distribution': 
+    elif mode == 'DISTRIBUTION': 
         for i in range(number):
             new_data = []
 
@@ -77,7 +82,7 @@ def inject_new(data, number, mode):
             # Add it to the dataset
             copy_data.loc[len(copy_data)] = new_data   
     
-    elif mode == 'malicious': 
+    elif mode == 'MALICIOUS': 
         for i in range(number):
             new_data = []
 
@@ -99,21 +104,28 @@ def tamper_rows(data, percent, mode):
     total = int(percent*len(data_copy))
     rows = np.random.randint(0, len(data), size=total)
 
-    if mode == 'random': 
+    if mode == 'RANDOM': 
         for i in rows: 
             for column in data_copy.columns[:-1]: 
-                data_copy.loc[i, column] = int(np.random.uniform(0, data[column].max()))
+                val = np.random.uniform(low = 0, high = data[column].max())
+                mean = data[column].mean()
+                print(f"The random value from 0 to max of the {column} is {val}, the mean is {mean}")
+                data_copy.loc[i, column] = int(val)
             data_copy.loc[i,'Tampered'] = 1  
 
-    if mode == "distribution": 
+    if mode == "DISTRIBUTION": 
         for i in rows: 
             for column in data_copy.columns[:-1]: 
-                data_copy.loc[i, column] = int(np.random.normal(loc=data[column].mean(), scale=data[column].std())  )
+                mean = data[column].mean()
+                std = data[column].std()
+                value = max(0,int(np.random.normal(loc=mean, scale=std)))
+                # print(f"The mean for column {column} is {mean} and the std is {std} which give a random value of {value}")
+                data_copy.loc[i, column] = value
             data_copy.loc[i,'Tampered'] = 1
-    if mode == 'malicious': 
+    if mode == 'MALICOUS': 
         for i in rows: 
             for column in data_copy.columns[:-1]: 
-                data_copy.loc[i, column] = int(np.random.uniform(-10000,10000))
+                data_copy.loc[i, column] = int(np.random.uniform(0,10000))
             data_copy.loc[i,'Tampered'] = 1
     return data_copy   
 

@@ -13,7 +13,7 @@ def main():
     data['diagnosis'] = data['diagnosis'].map({'M': 1, 'B': 0})
 
     # Apply misdirection poisoning
-    data = poison_utils.misdirection(data, number=10, complexity="major")
+    data = poison_utils.misdirection(data, number=10, complexity="random")
 
     # Separate features and labels
     X = data.drop(columns=['Tampered'])

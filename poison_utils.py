@@ -193,6 +193,24 @@ def misdirection(data, number,complexity):
             new_data.append(1)  # Append tampered label
             # Add it to the dataset
             data_copy.loc[len(data_copy)] = new_data
+    
+    #~~~~~~~~~~~~~~~~~~Random value from the column~~~~~~~~~~~~~~~~~~
+    if complexity == "random":
+        print("random version: add rows based on random values from existing rows")
+
+        for i in range(realNum):    
+            new_data = []
+
+            for column in data_copy.columns[:-1]:  # Exclude the last column
+                # Select a random value from the current column
+                random_val_1 = data[column].sample(n=1).values[0]
+                new_data.append(random_val_1)
+
+            # Mark it as tampered
+            new_data.append(1)  # Append tampered label
+            # Add it to the dataset
+            data_copy.loc[len(data_copy)] = new_data
+
 
     return data_copy
 

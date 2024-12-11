@@ -154,7 +154,7 @@ def build_isolation_forest(data):
     #fit the model
     isoModel.fit(data)
     #Store relevant informtaion in a copy of the data so that we can view it 
-    data_copy['score'] = isoModel.decision_function(data)
+    # data_copy['score'] = isoModel.decision_function(data)
     data_copy['anomaly'] = isoModel.predict(data)
     #return the copy
     return data_copy
@@ -168,8 +168,9 @@ def build_abod(data):
     #store the relevant information in a copy of the data so that we can view it 
     
     data_copy['label'] = abdoModel.labels_
-    data_copy['threshold'] = abdoModel.threshold_
+    # data_copy['threshold'] = abdoModel.threshold_
 
+    
     return data_copy
 
 def build_cblof(data): 
@@ -178,6 +179,6 @@ def build_cblof(data):
 
     cblofModel.fit(data)
     data_copy['label'] = cblofModel.labels_
-    data_copy['threshold'] = cblofModel.threshold_
+    # data_copy['threshold'] = cblofModel.threshold_
 
     return data_copy

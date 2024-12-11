@@ -1,18 +1,20 @@
 import preprocessing_utils as put 
 import model_utils as mut 
+import poison_utils as pput
 import xgboost as xgb
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
 
-import pandas as pd 
+from sklearn.preprocessing import StandardScaler
 
-heart = pd.read_csv("/Users/nathanwhitener/Desktop/Machine Learning/Project/CSC674Project/heart_failure_clinical_records_dataset.csv")
-print(heart['DEATH_EVENT'].value_counts())
-loan = pd.read_csv("/Users/nathanwhitener/Desktop/Machine Learning/Project/CSC674Project/loan_data.csv")
-print(loan["loan_status"].value_counts())
-print(loan.shape)
-machine = pd.read_csv("/Users/nathanwhitener/Desktop/Machine Learning/Project/CSC674Project/machine_failure_dataset.csv")
-print(machine['Failure_Risk'].value_counts())
-cancer = pd.read_csv("/Users/nathanwhitener/Desktop/Machine Learning/Project/CSC674Project/breast-cancer.csv")
-print(cancer['diagnosis'].value_counts())
+import pandas as pd 
+import majority_voting as mv 
+import preprocessing_utils as ppu 
+import pipeline_utils as pu
+
+data = ppu.heart_load()
+
+data2 = pu.test_poison_demo(data, 'TAMPER', 'HEART')
+
+print(data2['Poisoned'].value_counts())

@@ -7,6 +7,10 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 import ffnn_utils as fut
 from sklearn.metrics import ConfusionMatrixDisplay
 import matplotlib.pyplot as plt 
+from sklearn.ensemble import IsolationForest
+from pyod.models.abod import ABOD
+from pyod.models.auto_encoder import AutoEncoder
+from pyod.models.cblof import CBLOF
 
 
 def evaluate_model_performance(y_true, y_pred, y_prob):
@@ -135,3 +139,46 @@ def build_cm(preds, true):
     disp = ConfusionMatrixDisplay(confusion_matrix=con)
     disp.plot()
     plt.show()
+
+
+##########################################
+#  Outlier Detection/Anomolay Detection  # 
+##########################################
+    
+
+
+def build_isolation_forest(data): 
+    data_copy = data.copy()
+    #Declare the model
+    isoModel = IsolationForest()
+    #fit the model
+    isoModel.fit(data)
+    #Store relevant informtaion in a copy of the data so that we can view it 
+    # data_copy['score'] = isoModel.decision_function(data)
+    data_copy['anomaly'] = isoModel.predict(data)
+    #return the copy
+    return data_copy
+
+def build_abod(data): 
+    data_copy = data.copy() 
+    #Declare the model 
+    abdoModel = ABOD()
+    #fit the model 
+    abdoModel.fit(data)
+    #store the relevant information in a copy of the data so that we can view it 
+    
+    data_copy['label'] = abdoModel.labels_
+    # data_copy['threshold'] = abdoModel.threshold_
+
+    
+    return data_copy
+
+def build_cblof(data): 
+    data_copy = data.copy()
+    cblofModel = CBLOF() 
+
+    cblofModel.fit(data)
+    data_copy['label'] = cblofModel.labels_
+    # data_copy['threshold'] = cblofModel.threshold_
+
+    return data_copy

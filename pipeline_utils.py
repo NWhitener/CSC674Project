@@ -8,13 +8,13 @@ import majority_voting as mv
 
 
 def test_posion_1(posionType, percent, number, dataset, mode, style): 
-    if dataset == 'heart':
+    if dataset == 'HEART':
         X_train, X_test, y_train, y_test = put.heart_poison(posionType, percent, number, mode,style)
-    if dataset == 'loan': 
+    if dataset == 'LOAN': 
         X_train, X_test, y_train, y_test = put.loan_poison(posionType, percent, number, mode, style)
-    if dataset == 'cancer': 
+    if dataset == 'CANCER': 
         X_train, X_test, y_train, y_test = put.cancer_poison(posionType, percent, number, mode,style)
-    if dataset == 'machine': 
+    if dataset == 'MACHINE': 
         X_train, X_test, y_train, y_test = put.machine_poison(posionType, percent, number, mode,style)
     xgboost_list = []
     svm_list = []

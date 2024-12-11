@@ -15,9 +15,7 @@ def heart_poison(poison, percent, number, mode,style):
         data2 = pu.tamper_rows(data= data, percent=percent, mode = mode)
     X = data2.drop(columns = ['Tampered'])
     y = data2['Tampered']
-    if style == "Split":
-        X = data2.drop(columns = ['Tampered'])
-        y = data2['Tampered']
+    if style == "SPLIT":
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, stratify=y, random_state=43)
         return X_train, X_test, y_train, y_test
     else: 
@@ -33,7 +31,7 @@ def loan_poison(poison, percent, number, mode, style):
         data2 = pu.tamper_rows(data= data, percent=percent, mode = mode )
     X = data2.drop(columns = ['Tampered'])
     y = data2['Tampered']
-    if style == "Split":
+    if style == "SPLIT":
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, stratify=y, random_state=43)
         return X_train, X_test, y_train, y_test
     else: 
@@ -71,7 +69,7 @@ def machine_poison(poison, percent, number, mode, style):
         data2 = pu.tamper_rows(data= data, percent=percent, mode = mode)
     X = data2.drop(columns = ['Tampered'])
     y = data2['Tampered']
-    if style == "Split":
+    if style == "SPLIT":
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, stratify=y, random_state=43)
         return X_train, X_test, y_train, y_test
     else: 

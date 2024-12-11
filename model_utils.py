@@ -69,11 +69,6 @@ def xgbFull(X_train, X_test, y_train, y_test):
     pred_proba = model.predict_proba(X_test)[:,1]
 
     metrics = evaluate_model_performance(y_test, preds, pred_proba)
-    con = confusion_matrix(y_pred=preds, y_true=y_test)
-    disp = ConfusionMatrixDisplay(confusion_matrix=con)
-    disp.plot()
-    plt.show()
-
     return metrics
 
 

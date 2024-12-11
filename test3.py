@@ -16,5 +16,3 @@ import pipeline_utils as pu
 data = ppu.heart_load()
 
 data2 = pu.test_poison_demo(data, 'TAMPER', 'HEART')
-
-print(data2['Poisoned'].value_counts())

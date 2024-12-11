@@ -7,15 +7,15 @@ import preprocessing_utils as put
 import majority_voting as mv
 
 
-def test_posion_1(posionType, percent, number, dataset, mode): 
+def test_posion_1(posionType, percent, number, dataset, mode, style): 
     if dataset == 'heart':
-        X_train, X_test, y_train, y_test = put.heart(posionType, percent, number, mode)
+        X_train, X_test, y_train, y_test = put.heart_poison(posionType, percent, number, mode,style)
     if dataset == 'loan': 
-        X_train, X_test, y_train, y_test = put.loan(posionType, percent, number, mode)
+        X_train, X_test, y_train, y_test = put.loan_poison(posionType, percent, number, mode, style)
     if dataset == 'cancer': 
-        X_train, X_test, y_train, y_test = put.cancer(posionType, percent, number, mode)
+        X_train, X_test, y_train, y_test = put.cancer_poison(posionType, percent, number, mode,style)
     if dataset == 'machine': 
-        X_train, X_test, y_train, y_test = put.machine(posionType, percent, number, mode)
+        X_train, X_test, y_train, y_test = put.machine_poison(posionType, percent, number, mode,style)
     xgboost_list = []
     svm_list = []
     logreg_list = []

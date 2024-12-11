@@ -16,6 +16,8 @@ def heart_poison(poison, percent, number, mode,style):
     X = data2.drop(columns = ['Tampered'])
     y = data2['Tampered']
     if style == "Split":
+        X = data2.drop(columns = ['Tampered'])
+        y = data2['Tampered']
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, stratify=y, random_state=43)
         return X_train, X_test, y_train, y_test
     else: 
@@ -50,7 +52,8 @@ def cancer_poison(poison, percent, number, mode, style):
     if poison == "TAMPER": 
         data2 = pu.tamper_rows(data= data, percent=percent, mode = mode)
     X = data2.drop(columns = ['Tampered'])
-    if style == "Split":
+    y = data2['Tampered']
+    if style == "SPLIT":
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, stratify=y, random_state=43)
         return X_train, X_test, y_train, y_test
     else: 

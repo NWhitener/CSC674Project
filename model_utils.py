@@ -3,8 +3,14 @@ import numpy as np
 import xgboost as xgb 
 from sklearn.svm import SVC
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix
 import ffnn_utils as fut
+from sklearn.metrics import ConfusionMatrixDisplay
+import matplotlib.pyplot as plt 
+from sklearn.ensemble import IsolationForest
+from pyod.models.abod import ABOD
+from pyod.models.auto_encoder import AutoEncoder
+from pyod.models.cblof import CBLOF
 
 
 def evaluate_model_performance(y_true, y_pred, y_prob):
@@ -12,7 +18,7 @@ def evaluate_model_performance(y_true, y_pred, y_prob):
     accuracy = accuracy_score(y_true, y_pred)
     precision = precision_score(y_true, y_pred, average='binary', zero_division= 1)
     recall = recall_score(y_true, y_pred, average='binary', zero_division=1)
-    f1 = f1_score(y_true, y_pred, average='binary')
+    f1 = f1_score(y_true, y_pred, average='binary', zero_division=1)
     if len(set(y_true)) < 2:
         auc_roc = -1
     else:     
@@ -63,7 +69,6 @@ def xgbFull(X_train, X_test, y_train, y_test):
     pred_proba = model.predict_proba(X_test)[:,1]
 
     metrics = evaluate_model_performance(y_test, preds, pred_proba)
-
     return metrics
 
 
@@ -101,7 +106,7 @@ def ffnn(features, targets):
 ### Logistic Regression 
     
 def build_LogReg(features, target): 
-    logreg_model = LogisticRegression(max_iter = 10000)
+    logreg_model = LogisticRegression(max_iter = 1000000)
     logreg_model.fit(features, target)
     return logreg_model
 
@@ -123,3 +128,52 @@ def LogRegFull(X_train, X_test, y_train, y_test):
 
     return metrics
 
+
+def build_cm(preds, true): 
+    con = confusion_matrix(y_pred=preds, y_true=true)
+    disp = ConfusionMatrixDisplay(confusion_matrix=con)
+    disp.plot()
+    plt.show()
+
+
+##########################################
+#  Outlier Detection/Anomolay Detection  # 
+##########################################
+    
+
+
+def build_isolation_forest(data): 
+    data_copy = data.copy()
+    #Declare the model
+    isoModel = IsolationForest()
+    #fit the model
+    isoModel.fit(data)
+    #Store relevant informtaion in a copy of the data so that we can view it 
+    # data_copy['score'] = isoModel.decision_function(data)
+    data_copy['anomaly'] = isoModel.predict(data)
+    #return the copy
+    return data_copy
+
+def build_abod(data): 
+    data_copy = data.copy() 
+    #Declare the model 
+    abdoModel = ABOD()
+    #fit the model 
+    abdoModel.fit(data)
+    #store the relevant information in a copy of the data so that we can view it 
+    
+    data_copy['label'] = abdoModel.labels_
+    # data_copy['threshold'] = abdoModel.threshold_
+
+    
+    return data_copy
+
+def build_cblof(data): 
+    data_copy = data.copy()
+    cblofModel = CBLOF() 
+
+    cblofModel.fit(data)
+    data_copy['label'] = cblofModel.labels_
+    # data_copy['threshold'] = cblofModel.threshold_
+
+    return data_copy

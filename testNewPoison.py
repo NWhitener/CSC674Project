@@ -39,7 +39,7 @@ def main():
     print("\nDetection results for ABOD data:")
     print(detected_anomalies_ABOD[['label']])  
 
-    print("\nDetection results for ABOD data:")
+    print("\nDetection results for cblof data:")
     print(detected_anomalies_cblof[['label']])  
 
 

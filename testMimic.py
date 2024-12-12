@@ -15,16 +15,15 @@ def main():
     column_to_move = data.columns[1] 
     data = data[[col for col in data.columns if col != column_to_move] + [column_to_move]]
 
-    print(data)
-
     # Apply misdirection poisoning
-    data = poison_utils.misdirection(data, number=10, complexity="random")
-
+    data = poison_utils.mimic(data, percent=0.05)
+    
     # Separate features and labels
     X = data.drop(columns=['Tampered'])
     y = data['Tampered']
 
     # Run anomaly detection models
+    
     isoForestDataReturn = mu.build_isolation_forest(X)
 
     abodDataReturn = mu.build_abod(X)

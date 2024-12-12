@@ -7,6 +7,16 @@ import preprocessing_utils as put
 import majority_voting as mv
 
 
+
+'''
+A pipelining function that tests a specific type of poision on a dataset 
+@param - poisonType: The type of poison that should be used. Can take values of FLIP, TAMPER, INJECT, MISDIRECTION
+@param - percent: The percent of data that should be poisoned, used for the TAMPER, and FLIP poison types 
+@param - number: The number of rows to poision, used for the MISDERICTION and INJECT poison types 
+@param - dataset: The name of the dataset that the poison benchmarking should occur on 
+@param - mode: The mode of TAMPER, and INJECT that should occur. Can take values of RANDOM, DISTRIBUTION, or MALICOUS 
+@param - style: The style of the dataset poisoning. Used to differentiate between returning the X_train style or the full dataset 
+'''
 def test_posion_1(posionType, percent, number, dataset, mode, style): 
     if dataset == 'HEART':
         X_train, X_test, y_train, y_test = put.heart_poison(posionType, percent, number, mode,style)
@@ -39,8 +49,10 @@ def test_posion_1(posionType, percent, number, dataset, mode, style):
 
 
 '''
-Function to run all three poison types in a dataset and perform the anomaly detection and output the 
-points that have been detected as anomalous
+Function to test the anomaly/outlier detection methods to be used in the in-class demo 
+@param - data: The dataset that should be used for testing 
+@param - poison_type: The type of poison that should be used 
+@param - dataset: The dataset name to handle special cases 
 '''
 def test_poison_demo(data, poison_type, dataset): 
     if poison_type == 'FLIP': 
@@ -49,11 +61,14 @@ def test_poison_demo(data, poison_type, dataset):
         data2 = mv.detect_poison(data2)
         return data2[data2['Tampered'] == 1]['Poisoned'].value_counts()
     if poison_type == "INJECT": 
-        data2 = pu.inject_new(data, 15, 'DISTRIBUTION')
+        data2 = pu.inject_new(data, 20, 'DISTRIBUTION')
         data2 = mv.detect_poison(data2)
         return data2[data2['Tampered'] == 1]['Poisoned'].value_counts()
     if poison_type == 'TAMPER': 
         data2 = pu.tamper_rows(data, .1, 'DISTRIBUTION')
         data2 = mv.detect_poison(data2)
         return data2[data2['Tampered'] == 1]['Poisoned'].value_counts()
-    return None
+    if poison_type == 'MISDIRECTION': 
+        data2 = pu.misdirection(data, 20, 'MAJOR')
+        data2 = mv.detect_poison(data2)
+        return data2[data2['Tampered'] == 1]['Poisoned'].value_counts()

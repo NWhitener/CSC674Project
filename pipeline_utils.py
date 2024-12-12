@@ -45,14 +45,15 @@ points that have been detected as anomalous
 def test_poison_demo(data, poison_type, dataset): 
     if poison_type == 'FLIP': 
         data2 = pu.flip_random_labels(data, 0.15, dataset)
+        print(data2['Tampered'].value_counts())
         data2 = mv.detect_poison(data2)
-        return data2['Poisoned'].value_counts()
+        return data2[data2['Tampered'] == 1]['Poisoned'].value_counts()
     if poison_type == "INJECT": 
         data2 = pu.inject_new(data, 15, 'DISTRIBUTION')
         data2 = mv.detect_poison(data2)
-        return data2['Poisoned'].value_counts()
+        return data2[data2['Tampered'] == 1]['Poisoned'].value_counts()
     if poison_type == 'TAMPER': 
         data2 = pu.tamper_rows(data, .1, 'DISTRIBUTION')
         data2 = mv.detect_poison(data2)
-        return data2['Poisoned'].value_counts()
+        return data2[data2['Tampered'] == 1]['Poisoned'].value_counts()
     return None

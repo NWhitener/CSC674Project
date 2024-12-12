@@ -22,7 +22,7 @@ def flip_random_labels(data, percent, dataset):
     #Select a random sample of the dataset
     flips = np.random.randint(0, len(data), size=total)
     data_copy = prep_poision(data_copy)
-    if dataset == 'heart': 
+    if dataset == 'HEART': 
         for i in flips: 
             if data_copy.loc[i, 'DEATH_EVENT'] == 0: 
                 #Flip the data point
@@ -31,7 +31,7 @@ def flip_random_labels(data, percent, dataset):
             else: 
                 data_copy.loc[i, 'DEATH_EVENT'] = 0
                 data_copy.loc[i,'Tampered'] = 1
-    if dataset == 'cancer': 
+    if dataset == 'CANCER': 
         for i in flips: 
             if data_copy.loc[i, 'diagnosis'] == 0: 
                 #Flip the data point
@@ -39,6 +39,24 @@ def flip_random_labels(data, percent, dataset):
                 data_copy.loc[i, 'Tampered'] = 1
             else: 
                 data_copy.loc[i, 'diagnosis'] = 0
+                data_copy.loc[i,'Tampered'] = 1   
+    if dataset == 'MACHINE': 
+        for i in flips: 
+            if data_copy.loc[i, 'Failure_Risk'] == 0: 
+                #Flip the data point
+                data_copy.loc[i, 'Failure_Risk'] = 1
+                data_copy.loc[i, 'Tampered'] = 1
+            else: 
+                data_copy.loc[i, 'Failure_Risk'] = 0
+                data_copy.loc[i,'Tampered'] = 1   
+    if dataset == 'LOAN': 
+        for i in flips: 
+            if data_copy.loc[i, 'loan_status'] == 0: 
+                #Flip the data point
+                data_copy.loc[i, 'loan_status'] = 1
+                data_copy.loc[i, 'Tampered'] = 1
+            else: 
+                data_copy.loc[i, 'loan_status'] = 0
                 data_copy.loc[i,'Tampered'] = 1   
     return data_copy
 
@@ -128,6 +146,95 @@ def tamper_rows(data, percent, mode):
                 data_copy.loc[i, column] = int(np.random.uniform(0,10000))
             data_copy.loc[i,'Tampered'] = 1
     return data_copy   
+
+
+def misdirection(data, number,complexity):
+    data_copy = data.copy()
+    data_copy = prep_poision(data_copy)
+
+    # Number of purposefully bad added rows (should be 25%)
+    fakeNum = number // 4
+    # Number of realistic added rows (should be 75%)
+    realNum = number - fakeNum
+
+    # Fake Added rows (purposefully bad)
+    for i in range(fakeNum):
+        new_data = []
+
+        for column in data_copy.columns[:-1]:  # Exclude the last column
+            # Generate obviously fake data using 3 times the standard deviation
+            random_val_1 = int(np.random.normal(loc=data[column].mean(), scale= 2 * data[column].std()))
+            new_data.append(random_val_1)
+
+        # Mark it as tampered
+        new_data.append(1)  # Append tampered label
+        # Add it to the dataset
+        data_copy.loc[len(data_copy)] = new_data
+
+    # Realistic rows (copying a row, changing one column by std)
+    #~~~~~~~~~~~~~~~~~~~~~~~~one Col by STD~~~~~~~~~~~~~~~~~~~~~~~~
+    if complexity == "minor":
+        print("Minor version (add rows based on mean and std)")
+
+        #COPYING A ROW, CHANGING ONE COLUMN BY STD
+        for i in range(realNum):
+            # Choose a random column to modify (excluding the last column)
+            column_to_modify = np.random.randint(0, data_copy.shape[1] - 1)
+
+            # Grab column statistics
+            mean = data.iloc[:, column_to_modify].mean()
+            std = data.iloc[:, column_to_modify].std()
+
+            # Choose a random row index to copy
+            random_row_index = np.random.randint(data_copy.shape[0])
+            random_row = data_copy.iloc[random_row_index].copy()  # Copy the row
+
+            # Modify the selected column slightly
+            random_row.iloc[column_to_modify] = int(random_row[column_to_modify] + std)
+            
+            # Mark the row as tampered
+            random_row['Tampered'] = 1
+            # Add the modified row to the dataset
+            data_copy.loc[len(data_copy)] = random_row
+        
+    #~~~~~~~~~~~~~~~~~~~~~everything mean+std deviation~~~~~~~~~~~~~~~~~~~~~~~
+    if complexity == "major":
+        print("Major version add rows based on mean and std")
+
+        for i in range(realNum):    
+            new_data = []
+
+            for column in data_copy.columns[:-1]:  # Exclude the last column
+                # Generate data using the column's mean and std
+                random_val_1 = np.random.normal(loc=data[column].mean(), scale=data[column].std())
+                new_data.append(random_val_1)
+
+            # Mark it as tampered
+            new_data.append(1)  # Append tampered label
+            # Add it to the dataset
+            data_copy.loc[len(data_copy)] = new_data
+    
+    #~~~~~~~~~~~~~~~~~~Random value from the column~~~~~~~~~~~~~~~~~~
+    if complexity == "random":
+        print("random version: add rows based on random values from existing rows")
+
+        for i in range(realNum):    
+            new_data = []
+
+            for column in data_copy.columns[:-1]:  # Exclude the last column
+                # Select a random value from the current column
+                random_val_1 = data[column].sample(n=1).values[0]
+                new_data.append(random_val_1)
+
+            # Mark it as tampered
+            new_data.append(1)  # Append tampered label
+            # Add it to the dataset
+            data_copy.loc[len(data_copy)] = new_data
+
+
+    return data_copy
+
+
 
 #################################################################
 # Next Functions are not necessarily poisons but data tampering #

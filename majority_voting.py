@@ -32,8 +32,8 @@ def detect_poison(data):
 
 
     data2["Poisoned"] = results
-
-
+    data2['Tampered'] = data['Tampered']
+    print(data2['Tampered'].value_counts())
     return data2           
 
 

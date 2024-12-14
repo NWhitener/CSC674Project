@@ -1,0 +1,4 @@
+Method,Avg Correctly Identified Poison,Avg Fraction Correct (Poison),Avg Total Poison
+ABOD,1.0,0.07304029304029301,13.65
+CBLOF,1.17,0.08528388278388276,13.65
+ISO,6.52,0.47786630036630035,13.65
